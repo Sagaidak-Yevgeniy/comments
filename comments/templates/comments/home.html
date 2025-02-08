@@ -1,0 +1,22 @@
+<h2>Добро пожаловать, {% if user.is_authenticated %}{{ user.username }}{% else %}Guest{% endif %}! </h2>
+<a href="{% url 'logout' %}" class="text-danger">Выйти</a>
+
+{% if user.is_authenticated %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Добавить комментарий</button>
+    </form>
+{% else %}
+    <p><a href="{% url 'login' %}">Логин</a> оставить комментарий.</p>
+{% endif %}
+
+<h3>Комментарии:</h3>
+<ul>
+    {% for comment in comments %}
+        <li>
+            <strong>{{ comment.user.username }}</strong> - {{ comment.created_at }}:
+            <p>{{ comment.text }}</p>
+        </li>
+    {% endfor %}
+</ul>
